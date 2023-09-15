@@ -4,63 +4,51 @@ use crate::cli::arguments::Config;
 
 pub trait ReadFileAndCount {
     fn read_conf(&mut self, conf: &Config) -> Result<(), String>;
-    fn frequency(&self, word: &String) -> Result<i32, String>;
+    // fn frequency(&mut self, path: &String) -> Result<(), String>;
 }
 
 pub struct ReadFile {
-    path: String,
-    word: String,
-    frequency: i32,
+    // path word frequency
+    data: Vec<(String, String, i32)>,
 }
 
 impl ReadFile {
     pub fn new() -> ReadFile {
         ReadFile {
-            path: String::from(""),
-            word: String::from(""),
-            frequency: 0,
+            data: Vec::new()
         }
     }
-
-    pub fn get_frequency(&self) -> i32 {
-        self.frequency
-    }
-
-    pub fn get_path(&self) -> &String {
-        &self.path
-    }
-
-    pub fn get_word(&self) -> &String {
-        &self.word
+    pub fn get_data(&self) -> &Vec<(String, String, i32)> {
+        &self.data
     }
 }
 
 
 impl ReadFileAndCount for ReadFile {
     fn read_conf(&mut self, conf: &Config) -> Result<(), String> {
-        self.path = conf.get_input().clone();
-        self.word = conf.get_word().clone();
-        if self.path == "" {
-            return Err(String::from("输入文件路径为空"));
-        }
-        if self.word == "" {
-            return Err(String::from("输入单词为空"));
-        }
-        Ok(())
-    }
-
-    fn frequency(&self, word: &String) -> Result<i32, String> {
-        let mut file = std::fs::File::open(&self.path).expect("无法打开文件");
-        let mut contents = String::new();
-        file.read_to_string(&mut contents).expect("无法读取文件");
-        let mut count = 0;
-        for line in contents.lines() {
-            for w in line.split_whitespace() {
-                if w == word {
-                    count += 1;
+        for path in conf.get_input().iter() {
+            let mut file = std::fs::File::open(path).expect("无法打开文件");
+            let mut contents = String::new();
+            file.read_to_string(&mut contents).expect("无法读取文件");
+            for line in contents.lines() {
+                for word in line.split_whitespace() {
+                    if !conf.get_word().contains(&String::from(word)) {
+                        continue;
+                    }
+                    let mut flag = false;
+                    for (_index, data) in self.data.iter_mut().enumerate() {
+                        if data.0 == *path && data.1 == word {
+                            data.2 += 1;
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if !flag {
+                        self.data.push((path.clone(), word.to_string(), 1));
+                    }
                 }
             }
         }
-        Ok(count)
+        Ok(())
     }
 }

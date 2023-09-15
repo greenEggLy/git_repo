@@ -8,7 +8,7 @@ use std::{env, io};
 use crate::cli::arguments;
 use crate::cli::arguments::ParseArg;
 use crate::cli::search::{ReadFile, ReadFileAndCount};
-use crate::cli::writer::write_file;
+use crate::cli::writer::write_file_mul;
 
 mod cli {
     pub mod arguments;
@@ -38,24 +38,18 @@ fn main() {
     }
     // parse input
     let conf = arg_tool.parse().expect("无法解析输入");
+    eprintln!("{:?}", conf);
+
+
     let mut my_file = ReadFile::new();
     let res = my_file.read_conf(&conf);
     match res {
-        Ok(()) => {}
-        Err(e) => {
-            eprintln!("{:?}", e);
-            return;
-        }
-    }
-    let res = my_file.frequency(&conf.get_word());
-    match res {
-        Ok(count) => {
-            eprintln!("word {}'s frequency: {}", &conf.get_word(), count);
+        Ok(_) => {
+            write_file_mul(&conf.get_output(), my_file).expect("无法写入文件");
         }
         Err(e) => {
             eprintln!("{:?}", e);
             return;
         }
     }
-    write_file(&conf.get_output(), res.unwrap()).expect("无法写入文件");
 }
