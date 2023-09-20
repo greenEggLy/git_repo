@@ -46,10 +46,9 @@ pub fn sweep(input: &[&str]) -> Vec<Vec<char>> {
                 })
                 .collect::<Vec<char>>()
         })
-        .collect::<Vec<char>>();
-    let ret_val = result
+        .collect::<Vec<char>>()
         .chunks(col)
         .map(|x| x.to_vec())
         .collect::<Vec<Vec<char>>>();
-    return ret_val;
+    return result;
 }

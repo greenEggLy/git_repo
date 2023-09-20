@@ -35,6 +35,7 @@ pub fn frequency(str: &str) -> HashMap<char, i32> {
         });
         hmaps.push(handle.join().unwrap());
     }
+
     let hmap = hmaps.iter().fold(HashMap::new(), |mut target, x| {
         for (k, v) in x.iter() {
             let count = target.get(k);
