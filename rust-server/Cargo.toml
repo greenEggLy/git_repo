@@ -1,0 +1,32 @@
+[package]
+name = "rust-server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4.4.0"
+actix-cors = "0.6.4"
+actix-http = "3.4.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+config = "0.11"
+slog = "2.7.0"
+slog-term = "2.8.0"
+slog-async = "2.7.0"
+slog-json = "2.4.0"
+chrono = { version = "0.4", features = ["serde"] }
+sqlx = { version = "0.5.13", features = ["runtime-actix-native-tls", "uuid", "mysql", "chrono", "json"] }
+uuid = { version = "0.8", features = ["v4", "serde"] }
+mobc = "0.7"
+regex = "1"
+futures = "0.3"
+md5 = "0.7"
+sha2 = "0.10"
+jsonwebtoken = "7"
+aes = "0.7"
+block-modes = "0.8"
+base64 = "0.13"
+rand = "0.8"
+bytebuffer = "0.2"

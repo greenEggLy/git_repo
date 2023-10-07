@@ -1,0 +1,19 @@
+[app]
+name = "movie"
+port = 8080
+
+
+[mysql]
+user = "root"
+password = ""
+host = "127.0.0.1"
+port = 3306
+dbname = "movie"
+connect_timeout = 60
+idle_timeout = 5
+max = 1000
+
+
+[auth]
+access_token_expire = 7200
+refresh_token_expire = 604800
